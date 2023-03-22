@@ -21,8 +21,11 @@ services:
     working_dir: /opt/app
     command: bash
 
-  networks:
-    backend:
-      driver: bridge
-    frontend:
-      driver: bridge
+networks:
+  backend:
+    driver: bridge
+  frontend:
+    driver: bridge
+
+volumes:
+  db-data:
