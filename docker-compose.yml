@@ -1,0 +1,31 @@
+version: '3.7'
+
+services:
+  backend:
+    build: ./Backend
+    networks: 
+      - backend_net
+      - frontend_net
+    environment: 
+      FLASK_APP: app.py
+      BACKEND_URL: 0.0.0.0
+      FLASK_RUN_PORT: 5000
+      FLASK_ENV: development
+    ports: 
+      - 5000:5000
+
+  frontend:
+    build: ./Frontend
+    networks:
+      - frontend_net
+    environment: 
+      ENV BACKEND_URL: backend
+      ENV BACKEND_PORT: 5000
+    ports: 
+      - 80:80
+
+networks:
+  backend_net:
+    driver: bridge
+  frontend_net:
+    driver: bridge
