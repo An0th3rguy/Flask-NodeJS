@@ -1,20 +1,20 @@
 version: '3'
 
 services:
-  my-python-container:
+  backend:
     networks: 
       - backend
-    container_name: my-python-container
+    container_name: backend
     image: python:3.8-slim
     volumes:
       - /my/host/directory:/opt/app
     working_dir: /opt/app
     command: bash
 
-  my-node-container:
+  frontend:
     networks: 
       - frontend
-    container_name: my-node-container
+    container_name: frontend
     image: node:19-slim
     volumes:
       - /my/host/directory:/opt/app
