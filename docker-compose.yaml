@@ -2,6 +2,8 @@ version: '3'
 
 services:
   my-python-container:
+    networks: 
+      - backend
     container_name: my-python-container
     image: python:3.8-slim
     volumes:
@@ -10,9 +12,17 @@ services:
     command: bash
 
   my-node-container:
+    networks: 
+      - frontend
     container_name: my-node-container
-    image: node:14-slim
+    image: node:19-slim
     volumes:
       - /my/host/directory:/opt/app
     working_dir: /opt/app
     command: bash
+
+  networks:
+    backend:
+      driver: bridge
+    frontend:
+      driver: bridge
