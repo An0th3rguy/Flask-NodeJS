@@ -3,7 +3,15 @@ version: '3.7'
 services:
 
   backend:
-    build: ./Backend
+    # build: ./Backend
+    build: 
+      context: ./Backend
+      dockerfile: .devcontainer/Dockerfile
+      args:
+        VARIANT: 3
+    volumes:
+      - .:/workspace:cached # Additional bind mount
+    command: sleep infinity
     networks: 
       - backend_net
       - frontend_net
@@ -16,7 +24,16 @@ services:
       - 5000:5000
  
   frontend:
-    build: ./Frontend
+    # build: ./Frontend
+    build: 
+      context: ./Frontend
+      dockerfile: .devcontainer/Dockerfile
+      args:
+        # [Choice] Node version: 10, 12, 14
+        VARIANT: 14
+    volumes: 
+      - .:/workspace:cached # Additional bind mount
+    command: sleep infinity
     networks:
       - frontend_net
     environment: 
