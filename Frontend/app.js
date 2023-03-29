@@ -1,3 +1,5 @@
+const fetch = require("node-fetch");
+
 const http = require('http');
 
 const hostname = '0.0.0.0';
