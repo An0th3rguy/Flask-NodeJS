@@ -9,7 +9,7 @@ app = Flask(__name__)
 FlaskJSON(app)
 CORS(app)
 
-connectionstring = 'postgresql+psycopg2://postgres:postgres@db:5432'
+connectionstring = 'postgresql+psycopg2://postgres:postgres@db:5433'
 
 app.config['SQLALCHEMY_DATABASE_URI'] = connectionstring
 db = SQLAlchemy(app)
@@ -23,3 +23,4 @@ def hello_world():
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128))
+    email = db.Column(db.String(128))
