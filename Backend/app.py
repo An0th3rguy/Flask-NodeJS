@@ -11,7 +11,7 @@ FlaskJSON(app)
 CORS(app)
 bcrypt = Bcrypt(app)
 
-connectionstring = 'postgresql+psycopg2://postgres:postgres@db:5432'
+connectionstring = 'postgresql+psycopg2://postgres:postgres@db:5433'
 
 app.config['SQLALCHEMY_DATABASE_URI'] = connectionstring
 db = SQLAlchemy(app)
