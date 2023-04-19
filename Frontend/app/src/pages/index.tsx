@@ -2,12 +2,47 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
+import React, { useState } from 'react';
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
-  return (
-    <h1>TEST</h1>
+ 
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleLogin = () => {
+    const loginData = { username, password };
+    const loginPost = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(loginData)
+    };
+    fetch('http://localhost:5000/login', loginPost);
+  };
+
+  return ( 
+    <main>
+      <h1>Login</h1>
+      <div>
+        <input
+          type="text"
+          placeholder="Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <button onClick={handleLogin}>Login</button>
+        
+      </div>
+
+    </main>
+
     // <>
     //   <Head>
     //     <title>Create Next App</title>
