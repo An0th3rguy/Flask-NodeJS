@@ -1,7 +1,28 @@
-POST https://127.0.0.1:5000/users/create HTTP/1.1
+
+POST http://localhost:5000/user/create/tomas/heslo HTTP/1.1
 content-type: application/json
 
 {
     "name": "sample",
     "time": "Wed, 21 Oct 2015 18:27:50 GMT"
 }
+
+###
+
+GET  http://localhost:5000/login/tomas/heslo HTTP/1.1
+
+###
+
+POST http://localhost:5000/login HTTP/1.1
+content-type: application/json
+
+{
+    "name": "tomas",
+    "password": "heslo"
+}
+
+###
+
+GET http://localhost:5000/users HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY4MTg4OTA0OSwianRpIjoiYjJmNzcyOTctZGFkMS00MjEwLThlNjktNWQwOTRhMmIzNTRhIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6InRvbWFzIiwibmJmIjoxNjgxODg5MDQ5LCJleHAiOjE2ODE4ODk5NDl9.fRe6vBQS387ALYwyZxkenfQSOflLGXDtsbIbPHNMmjY
+

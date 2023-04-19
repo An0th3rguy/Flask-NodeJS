@@ -6,10 +6,21 @@ from flask_json import FlaskJSON, json_response
 from flask_cors import CORS
 from flask_bcrypt import Bcrypt
 
+from flask import jsonify
+from flask import request
+
+from flask_jwt_extended import create_access_token
+from flask_jwt_extended import get_jwt_identity
+from flask_jwt_extended import jwt_required
+from flask_jwt_extended import JWTManager
+
 app = Flask(__name__)
 FlaskJSON(app)
 CORS(app)
 bcrypt = Bcrypt(app)
+
+app.config["JWT_SECRET_KEY"] = "super-secret"  # Change this!
+jwt = JWTManager(app)
 
 connectionstring = 'postgresql+psycopg2://postgres:postgres@db:5433'
 
@@ -22,7 +33,19 @@ class User(db.Model):
     name = db.Column(db.String(128))
     surname = db.Column(db.String(128))
     email = db.Column(db.String(128), unique=True)
-    password = db.Column(db.String(256))
+    # password = db.Column(db.String(256))
+    password_hash = db.Column(db.String(80))
+
+    @property
+    def password(self):
+        raise AttributeError('password: write-only field')
+
+    @password.setter
+    def password(self, password):
+        self.password_hash = bcrypt.generate_password_hash(password).decode('utf-8')
+
+    def check_password(self, password):
+        return bcrypt.check_password_hash(self.password_hash, password)
 
     def toDict(self):
         return {
@@ -30,7 +53,7 @@ class User(db.Model):
             'name': self.name,
             'surname': self.surname,
             'email': self.email,
-            'password': self.password
+            # 'password': self.password
         }
 
 '''
@@ -45,6 +68,7 @@ def home():
     return json_response(time=now)
 
 @app.route('/users', methods=['GET'])
+@jwt_required()
 def get_users():
     users = User.query.all()
     data = {'data': [user.toDict() for user in users]}
@@ -59,7 +83,7 @@ def get_user(name):
 
 @app.route('/user/create/<string:name>/<string:password>', methods=['GET', 'POST'])
 def create_user(name, password):
-    password = bcrypt.generate_password_hash(password).decode('utf-8')
+    # password = bcrypt.generate_password_hash(password).decode('utf-8')
     user = User(name=name, password=password)
     db.session.add(user)
     db.session.commit()
@@ -69,7 +93,23 @@ def create_user(name, password):
 @app.route('/login/<string:name>/<string:password>', methods=['GET'])
 def login(name, password):
     user = User.query.filter_by(name=name).first()
-    if bcrypt.check_password_hash(user.password, password):
+    # if bcrypt.check_password_hash(user.password, password):
+    if user.check_password(password):
         return "success"
     else:
         return "fail"
+    
+
+@app.route('/login', methods=['POST'])
+def login_post():
+    name = request.json.get("name", None)
+    password = request.json.get("password", None)
+    user = User.query.filter_by(name=name).first()
+    if user.check_password(password):
+        access_token = create_access_token(identity=name)
+        return jsonify(access_token=access_token)
+    else:
+        return jsonify({"msg": "Bad username or password"}), 401
+
+if __name__ == "__main__":
+    app.run()
