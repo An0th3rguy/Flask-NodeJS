@@ -26,6 +26,16 @@ export default function Home() {
       });
   };
 
+  const handleRegister = () => {
+    const loginData = { name, password };
+    const loginPost = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(loginData)
+    };
+    fetch('/user/create', loginPost);
+  };
+
   return ( 
     <main>
       <h1>Login</h1>
@@ -43,6 +53,7 @@ export default function Home() {
           onChange={(e) => setPassword(e.target.value)}
         />
         <button onClick={handleLogin}>Login</button>
+        <button onClick={handleRegister}>Register</button>
         
       </div>
 
