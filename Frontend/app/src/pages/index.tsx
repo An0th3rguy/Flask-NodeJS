@@ -10,6 +10,7 @@ export default function Home() {
  
   const [name, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [token, setToken] = useState('');
 
   const handleLogin = () => {
     const loginData = { name, password };
@@ -18,7 +19,11 @@ export default function Home() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(loginData)
     };
-    fetch('/login', loginPost);
+    fetch('/login', loginPost)
+      .then(response => response.json())
+      .then(data => {
+        setToken(data.token);
+      });
   };
 
   return ( 
