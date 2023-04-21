@@ -8,17 +8,17 @@ const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
  
-  const [username, setUsername] = useState('');
+  const [name, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
   const handleLogin = () => {
-    const loginData = { username, password };
+    const loginData = { name, password };
     const loginPost = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(loginData)
     };
-    fetch('http://localhost:5000/login', loginPost);
+    fetch('/login', loginPost);
   };
 
   return ( 
@@ -28,7 +28,7 @@ export default function Home() {
         <input
           type="text"
           placeholder="Username"
-          value={username}
+          value={name}
           onChange={(e) => setUsername(e.target.value)}
         />
         <input
