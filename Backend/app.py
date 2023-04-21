@@ -33,8 +33,7 @@ class User(db.Model):
     name = db.Column(db.String(128))
     surname = db.Column(db.String(128))
     email = db.Column(db.String(128), unique=True)
-    # password = db.Column(db.String(256))
-    password_hash = db.Column(db.String(80))
+    password_hash = db.Column(db.String(128))
 
     @property
     def password(self):
@@ -52,8 +51,7 @@ class User(db.Model):
             'id': self.id,
             'name': self.name,
             'surname': self.surname,
-            'email': self.email,
-            # 'password': self.password
+            'email': self.email
         }
 
 '''
@@ -74,42 +72,48 @@ def get_users():
     data = {'data': [user.toDict() for user in users]}
     return data
 
-'''
-@app.route('/user/<string:name>', methods=['GET'])
-def get_user(name):
-    user = User.query.filter_by(name=name).first()
-    return json_response(id=user.id, name=user.name)
-'''
-
 @app.route('/user/create/<string:name>/<string:password>', methods=['GET', 'POST'])
 def create_user(name, password):
-    # password = bcrypt.generate_password_hash(password).decode('utf-8')
     user = User(name=name, password=password)
     db.session.add(user)
     db.session.commit()
-    result = User.query.filter_by(name=name).first()
-    return result.name
+    return "User added"
 
 @app.route('/login/<string:name>/<string:password>', methods=['GET'])
 def login(name, password):
     user = User.query.filter_by(name=name).first()
-    # if bcrypt.check_password_hash(user.password, password):
-    if user.check_password(password):
-        return "success"
+    if user:
+        if user.check_password(password):
+            return "Success"
+        else:
+            return "Incorrect username or password"
     else:
-        return "fail"
-    
+        return "User not found"
+
+
+@app.route('/user/create', methods=['POST'])
+def create_user_post():
+    name = request.json.get("name", None)
+    password = request.json.get("password", None)
+    user = User(name=name, password=password)
+    db.session.add(user)
+    db.session.commit()
+    return "User added"
 
 @app.route('/login', methods=['POST'])
 def login_post():
     name = request.json.get("name", None)
     password = request.json.get("password", None)
     user = User.query.filter_by(name=name).first()
-    if user.check_password(password):
-        access_token = create_access_token(identity=name)
-        return jsonify(access_token=access_token)
+    if user:
+        if user.check_password(password):
+            access_token = create_access_token(identity=name)
+            return jsonify(access_token=access_token)
+        else:
+            return jsonify({"msg": "Bad username or password"}), 401
     else:
-        return jsonify({"msg": "Bad username or password"}), 401
+        return "User not found"
+
 
 if __name__ == "__main__":
     app.run()
