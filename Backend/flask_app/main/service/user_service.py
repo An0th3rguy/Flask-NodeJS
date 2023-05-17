@@ -83,7 +83,6 @@ def login_post():
         return "User not found"
 
 
-
 def save_changes(data):
     db.session.add(data)
     db.session.commit()
