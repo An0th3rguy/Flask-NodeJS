@@ -14,3 +14,9 @@ def create_app(config_name):
     db.init_app(app)
     bcrypt.init_app(app)
     return app
+
+#    with app.app_context():
+#        db.drop_all()
+
+#    with app.app_context():
+#        db.create_all()
