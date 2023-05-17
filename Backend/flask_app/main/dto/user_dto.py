@@ -17,6 +17,11 @@ class UserDto:
         'name': fields.String(required=False, description='user first name'),
         'surname': fields.String(required=False, description='user last name')
         # 'public_id': fields.Ïnteger(description='user Identifier')
+
+    user_login = apiLogin.model('user_login',{
+        'name': fields.String(required=True, description='user first name'),
+        'password': fields.String(required=True, description='user password')
+    })
     })
 
     user_delete = apiDeletion.model('user_delete',{
