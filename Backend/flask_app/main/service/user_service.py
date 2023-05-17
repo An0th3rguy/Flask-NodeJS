@@ -14,7 +14,6 @@ def save_new_user(data):
             surname = data['surname'],
             email=data['email'],
             password=data['password']
-
         )
 
         save_changes(new_user)
