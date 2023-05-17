@@ -4,6 +4,13 @@ import uuid
 from .. import db
 from ..model.User import User
 
+def get_all_users():
+    users = User.query.all()
+    response_object = {
+            'status': 'success',
+            'data': [user.toDict() for user in users],
+        }
+    return response_object, 200
 
 def save_new_user(data):
     user = User.query.filter_by(email=data['email']).first()
@@ -30,14 +37,15 @@ def save_new_user(data):
         }
         return response_object, 409
 
-def get_all_users():
-    users = User.query.all()
+def delete_user(id):
+    user = User.query.get_or_404(id)
+    db.session.delete(user)
+    db.session.commit()
     response_object = {
-            'status': 'success',
-            'data': [user.toDict() for user in users],
+           'status': 'success',
+           'message': 'Successfully deleted.'
         }
-    return response_object, 200
-
+    return response_object, 201
 
 def save_changes(data):
     db.session.add(data)
