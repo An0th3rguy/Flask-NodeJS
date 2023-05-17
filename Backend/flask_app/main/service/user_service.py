@@ -45,9 +45,6 @@ def delete_user(id):
            'status': 'success',
            'message': 'Successfully deleted.'
         }
-<<<<<<< HEAD
-    return response_object, 201
-=======
     return response_object, 201
 
 def login_post():
@@ -64,7 +61,6 @@ def login_post():
         return "User not found"
 
 
->>>>>>> 7018f31 (login)
 
 def save_changes(data):
     db.session.add(data)
