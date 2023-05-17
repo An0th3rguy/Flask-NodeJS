@@ -16,5 +16,5 @@ class Delete(Resource):
 
     def post(self):
         """Delete User """
-        data = request.json
-        return delete_user(data=data)
+        id = request.json
+        return delete_user(id=id)
