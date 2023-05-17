@@ -14,4 +14,4 @@ api = Api(blueprint,
 
 api.add_namespace(user_ns, path='/user')
 
-api.add_namespace(registration_ns, path='/autorization')
+api.add_namespace(registration_ns, path='/registration')

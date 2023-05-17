@@ -2,7 +2,7 @@ from flask import request
 from flask_restx import Resource
 
 from ..dto.user_dto import UserDto
-from ..service.user_service import save_new_user, get_all_users
+from ..service.user_service import save_new_user
 
 api = UserDto.apiRegistration
 # _user_get = UserDto.user_get
@@ -19,9 +19,3 @@ class Registration(Resource):
         """Creates a new User """
         data = request.json
         return save_new_user(data=data)
-    
-    @api.response(200, 'Success')
-    @api.doc('get users')
-    def get(self):
-        """Get list of users"""
-        return get_all_users()
