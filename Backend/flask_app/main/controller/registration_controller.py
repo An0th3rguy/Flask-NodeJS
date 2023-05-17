@@ -5,7 +5,6 @@ from ..dto.user_dto import UserDto
 from ..service.user_service import save_new_user
 
 api = UserDto.apiRegistration
-# _user_get = UserDto.user_get
 _user_register = UserDto.user_register
 
 

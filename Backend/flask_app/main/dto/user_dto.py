@@ -1,7 +1,4 @@
 from flask_restx import Namespace, fields, cors
-#from datetime import datetime
-
-# vlastní autorizační namespace
 
 class UserDto:
     apiUser = Namespace('user', description='user related operations', decorators=[
@@ -18,13 +15,3 @@ class UserDto:
         'surname': fields.String(required=False, description='user last name')
         # 'public_id': fields.Ïnteger(description='user Identifier')
     })
-
-    user_delete = apiDeletion.model('user_delete',{
-        'id' : fields.Integer(required=True, description='user id')
-    })
-    # user_get = api.model('user_register',{
-    #     'email': fields.String(required=True, description='user email address'),
-    #     'name': fields.String(required=False, description='user first name'),
-    #     'surname': fields.String(required=False, description='user last name')
-    #     # 'public_id': fields.Ïnteger(description='user Identifier')
-    # }) 
