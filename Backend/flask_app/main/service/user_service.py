@@ -14,7 +14,6 @@ def save_new_user(data):
             surname = data['surname'],
             email=data['email'],
             password=data['password']
-
         )
 
         save_changes(new_user)
@@ -30,6 +29,14 @@ def save_new_user(data):
             'message': 'User already exists. Please Log in.',
         }
         return response_object, 409
+
+def get_all_users():
+    users = User.query.all()
+    response_object = {
+            'status': 'success',
+            'data': {user.toDit() for user in users},
+        }
+    return response_object, 200
 
 def save_changes(data):
     db.session.add(data)
