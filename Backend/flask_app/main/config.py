@@ -15,7 +15,7 @@ class DevelopmentConfig(Config):
     SQLALCHEMY_DATABASE_URI = postgres_local_base
     DEBUG = True
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-
+    JWT_SECRET_KEY = "super-secret"
 
 class TestingConfig(Config):
     DEBUG = True

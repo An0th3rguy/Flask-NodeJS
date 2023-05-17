@@ -69,6 +69,21 @@ def delete_user(id):
         }
         return response_object, 404
 
+def login_post():
+    name = request.json.get("name", None)
+    password = request.json.get("password", None)
+    user = User.query.filter_by(name=name).first()
+    if user:
+        if user.check_password(password):
+            access_token = create_access_token(identity=name)
+            return jsonify(access_token=access_token)
+        else:
+            return jsonify({"msg": "Bad username or password"}), 401
+    else:
+        return "User not found"
+
+
+
 def save_changes(data):
     db.session.add(data)
     db.session.commit()
