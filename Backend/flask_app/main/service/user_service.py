@@ -31,6 +31,15 @@ def save_new_user(data):
         }
         return response_object, 409
 
+def get_all_users():
+    users = User.query.all()
+    response_object = {
+            'status': 'success',
+            'data': [user.toDict() for user in users],
+        }
+    return response_object, 200
+
+
 def save_changes(data):
     db.session.add(data)
     db.session.commit()
