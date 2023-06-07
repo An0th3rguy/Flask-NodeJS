@@ -135,7 +135,7 @@ app.app_context().push()
 migrate = Migrate(app, db)
 
 # Nastavení povolení všech Cross-Origin přístupů
-CORS(app, resources={r"/*": {"origins": "*"}})
+CORS(app, resources={r"/*": {"origins": "*"}}) # Stále to hází na frontendu chybu CORS
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000, debug=True)
