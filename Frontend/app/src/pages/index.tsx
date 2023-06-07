@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
 import React, { useState } from 'react';
+const token1 = 3324242;
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -19,12 +20,34 @@ export default function Home() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(loginData)
     };
-    fetch('/login', loginPost)
+    fetch('/registration/login', loginPost)
       .then(response => response.json())
       .then(data => {
         setToken(data.token);
       });
-  };
+  
+      fetch('/', {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token1}`,
+          'Content-Type': 'application/json'
+        }
+      })
+        .then(response => response.json())
+        .then(data => {
+          // Vytvoření nového div elementu
+          const divElement = document.createElement('div');
+
+          // Nastavení vnitřního HTML obsahu div elementu
+          divElement.innerHTML = JSON.stringify(data);
+
+          // Přidání div elementu do určeného místa ve stránce
+          document.body.appendChild(divElement);
+        })
+        .catch(error => {
+          console.error('Chyba při zpracování požadavku:', error);
+        });
+    };
 
   const handleRegister = () => {
     const loginData = { name, password };
@@ -33,7 +56,7 @@ export default function Home() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(loginData)
     };
-    fetch('/user/create', loginPost);
+    fetch('/registration', loginPost);
   };
 
   return ( 

@@ -127,10 +127,15 @@ from flask_app import blueprint
 from flask_app.main import create_app, db
 #from flask_app.main.model import User
 
+from flask_cors import CORS
+
 app = create_app(os.getenv('BOILERPLATE_ENV') or 'dev')
 app.register_blueprint(blueprint)
 app.app_context().push()
 migrate = Migrate(app, db)
+
+# Nastavení povolení všech Cross-Origin přístupů
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000, debug=True)
